@@ -1,0 +1,38 @@
+.movie__block-data-information svg {
+    width: 35px;
+    height: 35px;
+}
+
+.movie__block-data-information {
+    display: flex;
+    justify-content: space-between;
+}
+
+.movie__block-data {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.movie__block {
+    display: flex;
+    box-shadow: 10px 5px 5px #cecdcd;
+}
+
+.about_movie {
+    margin-top: auto;
+}
+
+.movie__block-data-title {
+    font-weight: bold;
+}
+
+.movie__block-data-information-star svg path {
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.movie__block-data-information-star svg path:hover {
+    transition: all 0.3s ease-in-out;
+    fill: red;
+}
