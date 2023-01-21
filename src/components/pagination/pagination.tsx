@@ -1,14 +1,15 @@
 import "./pagination.css";
-import { listMovies } from "../mocks/listMovies";
 import { useContext } from "react";
 import { ChangeCurrentPageContext } from "../../App";
 import { CurrentPageContext } from "../../App";
 import { countPageSwitch } from "../../consts";
+import { ListMoviesContext } from "../../App";
 
 export default function Pagination() {
-  const numberOfPages = listMovies.length / countPageSwitch;
   const changeCountPage: any = useContext(ChangeCurrentPageContext);
-  const currentPage: any = useContext(CurrentPageContext);
+  const currentPage: number = useContext(CurrentPageContext);
+  const listMovies: any = useContext(ListMoviesContext)
+  const numberOfPages = listMovies.length / countPageSwitch;
 
   return (
     <div className="block__pagination">

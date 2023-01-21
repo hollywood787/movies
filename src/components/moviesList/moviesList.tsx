@@ -1,17 +1,18 @@
 import Movie from "./movie/movie";
 import "./moviesList.css";
-import { listMovies } from "../mocks/listMovies.js";
 import { CurrentPageContext } from "../../App";
-import { useContext } from "react";
+import { Key, useContext } from "react";
 import { countPageSwitch } from "../../consts";
+import { ListMoviesContext } from "../../App";
 
 export default function MoviesList() {
-  const currentPage: any = useContext(CurrentPageContext);
+  const currentPage: number = useContext(CurrentPageContext);
+  const listMovies: any = useContext(ListMoviesContext); 
   const result = listMovies.slice(currentPage, currentPage + countPageSwitch);
 
   return (
     <div className="movie__list-container">
-      {result.map((item) => (
+      {result.map((item: { id: Key | null | undefined; title: string; vote_average: number; }) => (
         <Movie
           key={item.id}
           title={item.title}
