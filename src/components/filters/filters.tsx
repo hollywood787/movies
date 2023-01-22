@@ -1,6 +1,6 @@
 import "./filters.css";
 import Pagination from "../pagination/pagination";
-import Genres from "./genres/genres";
+// import Genres from "./genres/genres";
 import { listGenres } from "../mocks/genres";
 import { ChangeListMoviesContext, ListMoviesContext } from "../../App";
 import { useContext, useEffect, useState } from "react";
@@ -19,7 +19,7 @@ export default function Filters() {
   const [year, setYear] = useState(defaultYear);
   const [sort, setSort] = useState(descendingRanking);
 
-  function mainFilter() {
+  function mainFilter(year: string, sort: string, genres: string) {
     const arrayYear = listMovies.filter(function (item) {
       if (!item.release_date.indexOf(year)) {
         return item;
@@ -53,15 +53,17 @@ export default function Filters() {
         break;
     }
 
-    const result = arrayYearSort.filter(function (item) {
-      if (item.genre_ids.includes(genres)) {
+    const result = arrayYearSort.filter(function (item: { genre_ids: number[]; }) {
+      if (item.genre_ids.includes(Number(genres))) {
         return item;
       }
-    });
+    });    
 
     if (!genres) {
       changeMovieList(arrayYearSort);
     } else {
+      console.log(arrayYearSort);
+      
       changeMovieList(result);
     }
   }
@@ -75,20 +77,22 @@ export default function Filters() {
         return item;
       }
     });
-    setYear(defaultYear)
     changeMovieList(sortYear);
   }
 
-  useEffect(() => {
-    mainFilter();
-  }, [year, sort, genres]);
-
   function sortMovieListYear(e: { target: { value: string } }) {
     setYear(e.target.value);
+    mainFilter(e.target.value, sort, genres);
   }
 
   function sortMovieListPopular(e: { target: { value: string } }) {
     setSort(e.target.value);
+    mainFilter(year, e.target.value, genres);
+  }
+
+  function sortMovieListGenres(e: { target: { value: string } }) {   
+    setGenres(e.target.value);
+    mainFilter(year, sort, e.target.value);
   }
 
   return (
@@ -118,13 +122,10 @@ export default function Filters() {
         </div>
         <div className="filters__block-genres">
           {listGenres.map((item) => (
-            <Genres
-              key={item.id}
-              id={item.id}
-              name={item.name}
-              changeGanresState={setGenres}
-              mainFilter={mainFilter}
-            />
+            <label key={item.id}>
+              <input type="checkbox" value={item.id} onChange={sortMovieListGenres}/>
+              {item.name}
+            </label>
           ))}
         </div>
         <Pagination />
