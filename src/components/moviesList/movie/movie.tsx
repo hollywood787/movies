@@ -1,4 +1,5 @@
 import "./movie.css";
+import { store } from "../../../main";
 
 type MovieInterface = {
   title: string
@@ -16,7 +17,7 @@ export default function Movie(value: MovieInterface) {
           <div className="movie__block-data-information-rating">
            Рейтинг: {value.voteAverage}
           </div>
-          <div className="movie__block-data-information-star">
+          <div className="movie__block-data-information-star" onClick={() => store.dispatch({type: 'on'})}>
             <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
               <rect fill="none" height="256" width="256" />
               <path
@@ -33,7 +34,7 @@ export default function Movie(value: MovieInterface) {
               />
             </svg>
           </div>
-          <div className="movie__block-data-information-star">
+          <div className="movie__block-data-information-star" onClick={() => store.dispatch({type: "on"})}>
             <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
               <rect fill="#fff" height="256" width="256" />
               <path

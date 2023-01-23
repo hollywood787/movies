@@ -1,24 +1,30 @@
 import Movie from "./movie/movie";
 import "./moviesList.css";
-import { CurrentPageContext } from "../../App";
-import { Key, useContext } from "react";
+import { Key } from "react";
 import { countPageSwitch } from "../../consts";
-import { ListMoviesContext } from "../../App";
+import { useSelector } from "react-redux";
+import { DataMovies } from "../mocks/listMovies";
 
 export default function MoviesList() {
-  const currentPage: number = useContext(CurrentPageContext);
-  const listMovies: any = useContext(ListMoviesContext); 
-  const result = listMovies.slice(currentPage, currentPage + countPageSwitch);
-
+  const movies = useSelector((state: DataMovies) => state.reducerMovies.curentList);
+  const currentPage = useSelector((state: DataMovies) => state.reducerCurrentPage);
+  const result = movies.slice(currentPage, currentPage + countPageSwitch);
+  
   return (
     <div className="movie__list-container">
-      {result.map((item: { id: Key | null | undefined; title: string; vote_average: number; }) => (
-        <Movie
-          key={item.id}
-          title={item.title}
-          voteAverage={item.vote_average}
-        />
-      ))}
+      {result.map(
+        (item: {
+          id: Key | null | undefined;
+          title: string;
+          vote_average: number;
+        }) => (
+          <Movie
+            key={item.id}
+            title={item.title}
+            voteAverage={item.vote_average}
+          />
+        )
+      )}
     </div>
   );
 }
