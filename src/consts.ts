@@ -1,0 +1,14 @@
+export const urlImage = "https://image.tmdb.org/t/p/w500";
+export const countPageSwitch = 10;
+export const popularВescending = '1'
+export const popularAscending = '2';
+export const descendingRanking = '3';
+export const ascendingRating = '4';
+export const defaultYear = '2020'
+export const filterYear = 'filter_by_year'
+export const filterSort = 'filter_by_sort'
+export const filterGenres = 'filter_by_genres'
+export const loginConst = 'test'
+export const passwordConst = '123'
+export const nextPage = 'changePage'
+export const prevPage = 'prevPage'
