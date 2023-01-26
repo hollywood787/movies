@@ -3,13 +3,16 @@ import { countPageSwitch } from "../../consts";
 import { useSelector } from "react-redux";
 import { store } from "../../main";
 import { nextPage, prevPage } from "../../consts";
+import { CurrentPage } from "../mocks/listMovies";
+import { ReducerMovies } from "../mocks/listMovies";
+import { nextPageAction, prevPageAction } from "../../actions";
 
 export default function Pagination() {
   const movies = useSelector(
-    (state: DataMovies) => state.reducerMovies.curentList
+    (state: ReducerMovies) => state.reducerMovies.curentList
   );
   const currentPage = useSelector(
-    (state: DataMovies) => state.reducerCurrentPage
+    (state: CurrentPage) => state.reducerCurrentPage
   );
   const numberOfPages = movies.length / countPageSwitch;
 
@@ -18,17 +21,13 @@ export default function Pagination() {
       <div className="block__pagination-buttons">
         <button
           disabled={!currentPage}
-          onClick={() =>
-            store.dispatch({ type: nextPage, payload: countPageSwitch })
-          }
+          onClick={() => nextPageAction(countPageSwitch)}
         >
           Назад
         </button>
         <button
           disabled={currentPage === movies.length - countPageSwitch}
-          onClick={() =>
-            store.dispatch({ type: prevPage, payload: countPageSwitch })
-          }
+          onClick={() => prevPageAction(countPageSwitch)}
         >
           Вперед
         </button>

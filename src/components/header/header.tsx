@@ -1,15 +1,14 @@
 import "./header.css";
 import { Link } from "react-router-dom";
-import { store } from "../../main";
 import { useSelector } from "react-redux";
+import { isLogin, onActionsPopup } from "../../actions";
 
 export default function Header() {
-
   const isLogged = useSelector((state: any) => state.reducerLogin);
-  
+
   function logOut() {
-    localStorage.removeItem('user');
-    store.dispatch({type: 'Login'})
+    localStorage.removeItem("user");
+    isLogin();
   }
 
   return (
@@ -20,13 +19,14 @@ export default function Header() {
             Home
           </Link>
           {isLogged ? (
-            <button className="header__block-login" onClick={() => logOut()}
-            >
+            <button className="header__block-login" onClick={() => logOut()}>
               Выйти
             </button>
           ) : (
             <button
-              className="header__block-login" onClick={() => store.dispatch({type: "on"})}>
+              className="header__block-login"
+              onClick={() => onActionsPopup()}
+            >
               Войти
             </button>
           )}

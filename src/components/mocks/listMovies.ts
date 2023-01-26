@@ -1,9 +1,7 @@
-import { AnyAction, combineReducers } from "redux";
-import { filterYear, filterSort, filterGenres, nextPage, prevPage } from "../../consts";
-interface Movie {
+export interface Movie {
     id: number
     "title": string
-    "adult"?: boolean
+    "adult": boolean
     "backdrop_path": string
     "genre_ids": number[]
     "original_language": string
@@ -4084,83 +4082,3 @@ export const listMovies: Movie[] = [
     },
 ];
 
-export interface DataMovies {
-    initList: Movie[];
-    curentList: Movie[];
-
-    year: string
-}
-
-export const data: DataMovies = {
-    initList: listMovies,
-    curentList: listMovies,
-
-    year: '',
-}
-
-const initalStatePopup = false;
-const initalStateLogin = false;
-const initalStateCurrentPage = 0;
-
-
-export function reducerMovies(state = data, action: AnyAction) {
-    switch (action.type) {
-        case filterYear:
-            return { ...state, curentList: action.payload }
-
-        case filterSort:
-            return { ...state, curentList: action.payload }
-
-        case filterGenres:
-            return { ...state, curentList: action.payload }
-
-        default:
-            return state;
-    }
-}
-
-export function reducerPopup(state = initalStatePopup, action: AnyAction) {
-    switch (action.type) {
-        case 'off':
-            return state = false
-
-        case 'on':
-            return state = true
-
-        default:
-            return state;
-    }
-}
-
-export function reducerLogin(state = initalStateLogin, action: AnyAction) {
-    switch (action.type) {
-        case 'Login':
-            return state = false
-
-        case 'Exit':
-            return state = true
-
-        default:
-            return state;
-    }
-}
-
-export function reducerCurrentPage(state = initalStateCurrentPage, action: AnyAction) {
-    switch (action.type) {
-        case nextPage:
-            return state - action.payload;
-
-        case prevPage:
-            return state + action.payload;
-
-        default:
-            return state;
-    }
-}
-
-export default combineReducers({
-    reducerPopup,
-    reducerMovies,
-    reducerLogin,
-    reducerCurrentPage
-})

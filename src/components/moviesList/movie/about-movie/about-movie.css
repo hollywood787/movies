@@ -1,0 +1,10 @@
+.block_element {
+    display: flex;
+    gap: 2rem;
+}
+
+.block_ellement-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}

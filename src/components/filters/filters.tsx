@@ -2,17 +2,21 @@ import "./filters.css";
 import Pagination from "../pagination/pagination";
 import { listGenres } from "../mocks/genres";
 import {
-  popularВescending,
+  popularBescending,
   popularAscending,
   descendingRanking,
   ascendingRating,
   filterYear,
   filterGenres,
-  filterSort,
+  sortByFavotire,
+  bookmarkMovie,
+  favoriteMovie,
+  reset
 } from "../../consts";
 import { useSelector } from "react-redux";
-import { data } from "../mocks/listMovies";
 import { store } from "../../main";
+import { filterSorting } from "../../actions";
+import { data, Login, ReducerMovies } from "../../reducers";
 
 export default function Filters() {
   function filterByYear(e: { target: { value: string } }) {
@@ -21,73 +25,101 @@ export default function Filters() {
         return item;
       }
     });
-    data.year = e.target.value;
     store.dispatch({ type: filterYear, payload: result });
   }
 
-
   const currentList = useSelector(
-    (state: boolean) => state.reducerMovies.curentList
+    (state: ReducerMovies) => state.reducerMovies.curentList
   );
 
   function filterBySort(e: { target: { value: string } }) {
     let arrayYearSort: any = "12";
     switch (e.target.value) {
-      case popularВescending:
+      case popularBescending:
         arrayYearSort = [...currentList].sort((a, b) =>
           a.popularity < b.popularity ? 1 : -1
         );
-        store.dispatch({ type: filterSort, payload: arrayYearSort });
+        filterSorting(arrayYearSort);
         break;
 
       case popularAscending:
         arrayYearSort = [...currentList].sort((a, b) =>
           a.popularity > b.popularity ? 1 : -1
         );
-        store.dispatch({ type: filterSort, payload: arrayYearSort });
+        filterSorting(arrayYearSort);
         break;
 
       case descendingRanking:
         arrayYearSort = [...currentList].sort((a, b) =>
           a.vote_average < b.vote_average ? 1 : -1
         );
-        store.dispatch({ type: filterSort, payload: arrayYearSort });
+        filterSorting(arrayYearSort);
         break;
 
       case ascendingRating:
         arrayYearSort = [...currentList].sort((a, b) =>
           a.vote_average > b.vote_average ? 1 : -1
         );
-        store.dispatch({ type: filterSort, payload: arrayYearSort });
+        filterSorting(arrayYearSort);
+        break;
+
+      case sortByFavotire:
+        const resultFavorite = JSON.parse(
+          localStorage.getItem(favoriteMovie) || ""
+        );
+        filterSorting(resultFavorite);
+        break;
+
+      case bookmarkMovie:
+        const resultBookmark = JSON.parse(
+          localStorage.getItem(bookmarkMovie) || ""
+        );
+        filterSorting(resultBookmark);
         break;
     }
   }
 
   function sortByGenres(e: { target: { value: string } }) {
-    const result = currentList.filter(function(item) {
+    const result = currentList.filter(function (item) {
       if (item.genre_ids.includes(Number(e.target.value))) {
         return item;
-      }})
-      store.dispatch({ type: filterGenres, payload: result });
+      }
+    });
+    store.dispatch({ type: filterGenres, payload: result });
   }
 
-  const isAuthorized = useSelector((state: boolean) => state.reducerLogin);
+  const isAuthorized = useSelector((state: Login) => state.reducerLogin);
 
   return (
     <div className="filters">
       <div className="filters__block">
         <h2>Фильтры</h2>
         <div className="filters__block-drop-all">
-          <button>Сбросить все фильтры</button>
+          <button onClick={() => store.dispatch({type: reset})} >Сбросить все фильтры</button>
         </div>
         <div className="filters__block-drop-all-sort">
           Сортировать по:
-          <select onChange={filterBySort} name="" id="">
-            <option value={popularВescending}>Популярные по убыванию</option>
-            <option value={popularAscending}>Популярные по возрастанию</option>
-            <option value={descendingRanking}>Рейтинг по убыванию</option>
-            <option value={ascendingRating}>Рейтинг по возрастанию</option>
-          </select>
+          {isAuthorized ? (
+            <select onChange={filterBySort} name="" id="">
+              <option value={popularBescending}>Популярные по убыванию</option>
+              <option value={popularAscending}>
+                Популярные по возрастанию
+              </option>
+              <option value={descendingRanking}>Рейтинг по убыванию</option>
+              <option value={ascendingRating}>Рейтинг по возрастанию</option>
+              <option value={sortByFavotire}>Избранное</option>
+              <option value={bookmarkMovie}>Закладки</option>
+            </select>
+          ) : (
+            <select onChange={filterBySort} name="" id="">
+              <option value={popularBescending}>Популярные по убыванию</option>
+              <option value={popularAscending}>
+                Популярные по возрастанию
+              </option>
+              <option value={descendingRanking}>Рейтинг по убыванию</option>
+              <option value={ascendingRating}>Рейтинг по возрастанию</option>
+            </select>
+          )}
         </div>
         <div className="filters__block-drop-all-sort">
           Год релиза:
@@ -106,16 +138,6 @@ export default function Filters() {
             </label>
           ))}
         </div>
-        {isAuthorized && (
-          <div>
-            <select name="" id="">
-              <option value="1">Избранное</option>
-            </select>
-            <select name="" id="">
-              <option value="2">Закладки</option>
-            </select>
-          </div>
-        )}
         <Pagination />
       </div>
     </div>
