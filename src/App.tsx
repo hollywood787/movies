@@ -1,34 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import "./App.css";
+import Header from "./components/header/header";
+import MoviesList from "./components/moviesList/moviesList";
+import Filters from "./components/filters/filters";
+import { Popup } from "./components/popup/popup";
+import { Routes, Route } from "react-router-dom";
+import { AboutMovie } from "./components/moviesList/movie/about-movie/about-movie";
+import { useSelector } from "react-redux";
+import { ReducerMovies } from "./components/mocks/listMovies";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const movies = useSelector(
+    (state: ReducerMovies) => state.reducerMovies.curentList
+  );
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Header />
+
+      <section id="hero">
+        <div className="container-fluid">
+          <div className="hero__block">
+            <Filters />
+            <Routes>
+              {movies.map((item) => (
+                <Route
+                  path={`/${item.id}`}
+                  key={item.id}
+                  element={<AboutMovie element={item} />}
+                />
+              ))}
+              <Route path="/" element={<MoviesList />} />
+            </Routes>
+          </div>
+        </div>
+      </section>
+      <Popup />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
