@@ -1,4 +1,4 @@
-import { listMovies } from "./components/mocks/listMovies";
+import { listMovies } from "./components/mocks/list-movies";
 
 function initialMovies() {
     const result = listMovies.filter(function (item) {

@@ -3,8 +3,8 @@ import { countPageSwitch } from "../../consts";
 import { useSelector } from "react-redux";
 import { store } from "../../main";
 import { nextPage, prevPage } from "../../consts";
-import { CurrentPage } from "../mocks/listMovies";
-import { ReducerMovies } from "../mocks/listMovies";
+import { CurrentPage } from "../mocks/list-movies";
+import { ReducerMovies } from "../mocks/list-movies";
 import { nextPageAction, prevPageAction } from "../../actions";
 
 export default function Pagination() {

@@ -1,5 +1,5 @@
 import Movie from "./movie/movie";
-import "./moviesList.css";
+import "./movies-list.css";
 import { countPageSwitch } from "../../consts";
 import { useSelector } from "react-redux";
 import { CurrentPage, ReducerMovies } from "../../reducers";
