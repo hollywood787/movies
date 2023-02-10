@@ -1,10 +1,10 @@
-import "./popup.css";
 import { useSelector } from "react-redux";
 import { SetStateAction, useState } from "react";
 import { loginConst, passwordConst } from "../../consts";
 import { logOutAction } from "../../actions";
 import { offActionsPopup } from "../../actions";
 import { ReducerPopup } from "../../reducers";
+import { Button, Input, Typography, Box } from "@mui/material";
 
 function Popup() {
   const isAuthorized = useSelector((state: ReducerPopup) => state.reducerPopup);
@@ -15,7 +15,9 @@ function Popup() {
     setLogin(event.target.value);
   }
 
-  function changePassword(event: { target: { value: SetStateAction<string> }; }) {
+  function changePassword(event: {
+    target: { value: SetStateAction<string> };
+  }) {
     setPassword(event.target.value);
   }
 
@@ -28,32 +30,44 @@ function Popup() {
     }
   }
   return (
-    <div>
+    <Box>
       {isAuthorized && (
         <>
-          <div className="popup">
-            <div
-              className="button__close"
+          <Box
+            sx={{
+              position: "fixed",
+              backgroundColor: "#fff",
+              top: "50%",
+              left: "50%",
+              transform: "translateX(-50%) translateY(-50%)",
+              border: "1px solid black",
+              padding: 1,
+              textAlign: "center",
+              width: "30%",
+            }}
+          >
+            <Button
+              sx={{ display: "flex", marginLeft: "auto" }}
               onClick={() => offActionsPopup()}
             >
               X
-            </div>
-            <div className="popup__content">
-              <h1>Авторизация</h1>
-            </div>
-            <form className="autrization" onSubmit={autorization} action="">
-              <input onChange={changeLogin} type="text" placeholder="логин" />
-              <input
+            </Button>
+            <Typography component={"h1"} variant={"h5"}>
+              Авторизация
+            </Typography>
+            <Box component="form" onSubmit={autorization} action="">
+              <Input onChange={changeLogin} type="text" placeholder="логин" />
+              <Input
                 onChange={changePassword}
                 type="text"
                 placeholder="пароль"
               />
-              <input type="submit" value={'Отправить'}/>
-            </form>
-          </div>
+              <Input type="submit" value={"Отправить"} />
+            </Box>
+          </Box>
         </>
       )}
-    </div>
+    </Box>
   );
 }
 

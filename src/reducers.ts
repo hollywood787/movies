@@ -7,6 +7,7 @@ import { initialMoviesArray } from "./initial-movies";
 export interface DataMovies {
     initList: Movie[];
     curentList: Movie[];
+    year: string;
 }
 
 export interface DataSearch {
@@ -37,6 +38,7 @@ export interface ReducerPopup {
 export const data: DataMovies = {
     initList: listMovies,
     curentList: initialMoviesArray,
+    year: "",
 
 }
 

@@ -1,7 +1,7 @@
-import "./header.css";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { isLogin, onActionsPopup } from "../../actions";
+import { Box, AppBar, Button, Stack, Container } from "@mui/material";
 
 export default function Header() {
   const isLogged = useSelector((state: any) => state.reducerLogin);
@@ -12,29 +12,29 @@ export default function Header() {
   }
 
   return (
-    <header>
-      <div className="container-fluid">
-        <div className="header__block">
-          <Link to={"/"} className="header__block-home">
-            Home
-          </Link>
-          <Link to={"/search"} className="header__block-home">
-            Поиск
-          </Link>
-          {isLogged ? (
-            <button className="header__block-login" onClick={() => logOut()}>
-              Выйти
-            </button>
-          ) : (
-            <button
-              className="header__block-login"
-              onClick={() => onActionsPopup()}
-            >
-              Войти
-            </button>
-          )}
-        </div>
-      </div>
-    </header>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar sx={{ p: 1 }} position="static">
+        <Container maxWidth="xl">
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Link to={"/"}>Home</Link>
+            <Link to={"/search"}>Поиск</Link>
+
+            {isLogged ? (
+              <Button variant="contained" onClick={() => logOut()}>
+                Выйти
+              </Button>
+            ) : (
+              <Button variant="contained" onClick={() => onActionsPopup()}>
+                Войти
+              </Button>
+            )}
+          </Stack>
+        </Container>
+      </AppBar>
+    </Box>
   );
 }

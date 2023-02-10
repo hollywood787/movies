@@ -1,7 +1,5 @@
 import { store } from "../../main";
-import { dataSearch } from "../../reducers";
 import { genresSearch, yearsSearch } from "../../consts";
-import { filterGenresSearch } from "../../actions";
 import { initalDataSearch } from "../../reducers";
 
 

@@ -1,11 +1,9 @@
-import "./pagination.css";
 import { countPageSwitch } from "../../consts";
 import { useSelector } from "react-redux";
-import { store } from "../../main";
-import { nextPage, prevPage } from "../../consts";
-import { CurrentPage } from "../mocks/list-movies";
-import { ReducerMovies } from "../mocks/list-movies";
+import { CurrentPage } from "../../reducers";
+import { ReducerMovies } from "../../reducers";
 import { nextPageAction, prevPageAction } from "../../actions";
+import { Button, Stack, Typography, Box } from "@mui/material";
 
 export default function Pagination() {
   const movies = useSelector(
@@ -17,23 +15,25 @@ export default function Pagination() {
   const numberOfPages = movies.length / countPageSwitch;
 
   return (
-    <div className="block__pagination">
-      <div className="block__pagination-buttons">
-        <button
+    <Box>
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Button
           disabled={!currentPage}
           onClick={() => nextPageAction(countPageSwitch)}
         >
           Назад
-        </button>
-        <button
+        </Button>
+        <Button
           disabled={currentPage === movies.length - countPageSwitch}
           onClick={() => prevPageAction(countPageSwitch)}
         >
           Вперед
-        </button>
-      </div>
-      {currentPage ? currentPage / countPageSwitch + 1 : 1} of{" "}
-      {Math.ceil(numberOfPages)}
-    </div>
+        </Button>
+      </Stack>
+      <Typography align="center">
+        {currentPage ? currentPage / countPageSwitch + 1 : 1} of{" "}
+        {Math.ceil(numberOfPages)}
+      </Typography>
+    </Box>
   );
 }
