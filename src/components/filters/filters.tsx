@@ -1,5 +1,7 @@
 import "./filters.css";
 import Pagination from "../pagination/pagination";
+import Genres from "./genres/genres";
+import { listGenres } from "../mocks/genres"
 
 export default function Filters() {
   return (
@@ -24,18 +26,9 @@ export default function Filters() {
           </select>
         </div>
         <div className="filters__block-genres">
-          <label>
-            <input type="checkbox" />
-            Боевик
-          </label>
-          <label>
-            <input type="checkbox" />
-            Приключения
-          </label>
-          <label>
-            <input type="checkbox" />
-            Мультик
-          </label>
+          {listGenres.map((item) => (
+            <Genres key={item.id} name={item.name} />
+          ))}
         </div>
         <Pagination />
       </div>
