@@ -21,7 +21,7 @@ export default function Pagination() {
           Вперед
         </button>
       </div>
-      {currentPage ? (currentPage / countPageSwitch) + 1 : 1 } of {numberOfPages}
+      {currentPage ? (currentPage / countPageSwitch) + 1 : 1 } of {Math.ceil(numberOfPages)}
     </div>
   );
 }
