@@ -1,0 +1,23 @@
+header {
+    background-color: rgb(30, 121, 240);
+}
+
+.header__block-home {
+    color: #fff;
+    text-decoration: none;
+}
+
+.header__block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.header__block-login {
+    background-color: rgb(12, 121, 12);
+    color: #fff;
+    padding: 1rem;
+    border: none;
+    cursor: pointer;
+}
