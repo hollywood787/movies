@@ -18,6 +18,9 @@ export default function Header() {
           <Link to={"/"} className="header__block-home">
             Home
           </Link>
+          <Link to={"/search"} className="header__block-home">
+            Поиск
+          </Link>
           {isLogged ? (
             <button className="header__block-login" onClick={() => logOut()}>
               Выйти

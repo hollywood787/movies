@@ -1,17 +1,25 @@
-import { listMovies } from "./components/mocks/listMovies";
+import { listMovies } from "./components/mocks/list-movies";
 import { AnyAction, combineReducers } from "redux";
-import { filterYear, filterSort, filterGenres, nextPage, prevPage, sortByFavotire, bookmarkMovie, exit, offPopup, login, onPopup, reset } from "./consts"
-import { Movie } from "./components/mocks/listMovies";
-import { initialMoviesArray } from "./initialMovies";
+import { filterYear, filterSort, filterGenres, nextPage, prevPage, sortByFavotire, bookmarkMovie, exit, offPopup, login, onPopup, reset, genresSearch, yearsSearch } from "./consts"
+import { Movie } from "./components/mocks/list-movies";
+import { initialMoviesArray } from "./initial-movies";
+
 export interface DataMovies {
     initList: Movie[];
     curentList: Movie[];
 }
 
-
+export interface DataSearch {
+    [x: string]: any;
+    currentList: Movie[];
+}
 
 export interface ReducerMovies {
     reducerMovies: DataMovies
+}
+
+export interface ReducerSearch {
+    reducerSearch: DataSearch;
 }
 
 export interface CurrentPage {
@@ -29,11 +37,17 @@ export interface ReducerPopup {
 export const data: DataMovies = {
     initList: listMovies,
     curentList: initialMoviesArray,
+
+}
+
+export const dataSearch: DataSearch = {
+    currentList: listMovies,
 }
 
 const initalStatePopup = false;
 const initalStateLogin = false;
 const initalStateCurrentPage = 0;
+export let initalDataSearch = listMovies;
 
 
 export function reducerMovies(state = data, action: AnyAction) {
@@ -57,6 +71,22 @@ export function reducerMovies(state = data, action: AnyAction) {
 
         case reset: {
             return { ...state, curentList: initialMoviesArray }
+        }
+
+        default:
+            return state;
+    }
+}
+
+
+export function reducerSearch(state = initalDataSearch, action: AnyAction) {
+    switch (action.type) {
+        case genresSearch: {
+            return initalDataSearch = action.payload
+        }
+
+        case yearsSearch: {
+            return initalDataSearch = action.payload
         }
 
         default:
@@ -109,5 +139,6 @@ export default combineReducers({
     reducerPopup,
     reducerMovies,
     reducerLogin,
-    reducerCurrentPage
+    reducerCurrentPage,
+    reducerSearch
 })

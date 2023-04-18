@@ -1,7 +1,6 @@
 import "./movie.css";
-import { store } from "../../../main";
 import { useSelector } from "react-redux";
-import { favoriteMovie, bookmarkMovie } from "../../../consts";
+import { sortByFavotire, bookmarkMovie } from "../../../consts";
 import { Link } from "react-router-dom";
 import { onActionsPopup } from "../../../actions";
 
@@ -12,13 +11,13 @@ type MovieInterface = {
   id: number;
 };
 
-export default function Movie(value: MovieInterface) {
+export default function Movie({title, voteAverage, item, id}: MovieInterface) {
   const isLogged = useSelector((state: any) => state.reducerLogin);
-  const lcFavotieMovie = localStorage.getItem(favoriteMovie) || '';
+  const lcFavotieMovie = localStorage.getItem(sortByFavotire) || '';
   const lcBookmarkMovie = localStorage.getItem(bookmarkMovie) || '';
 
   if (!lcFavotieMovie) {
-    localStorage.setItem(favoriteMovie, JSON.stringify([]));
+    localStorage.setItem(sortByFavotire, JSON.stringify([]));
   }
 
   if (!lcBookmarkMovie) {
@@ -27,10 +26,10 @@ export default function Movie(value: MovieInterface) {
 
   function eventOnButtonFavorite() {
     if (isLogged) {
-      const currentLC = JSON.parse(localStorage.getItem(favoriteMovie) || "");
+      const currentLC = JSON.parse(localStorage.getItem(sortByFavotire) || "");
       
-      const result = [...currentLC, value.item];
-      localStorage.setItem(favoriteMovie, JSON.stringify(result));
+      const result = [...currentLC, item];
+      localStorage.setItem(sortByFavotire, JSON.stringify(result));
     } else {
       onActionsPopup();
     }
@@ -39,7 +38,7 @@ export default function Movie(value: MovieInterface) {
   function eventOnButtonBookmark() {
     if (isLogged) {
       const currentLC = JSON.parse(localStorage.getItem(bookmarkMovie) || "");
-      const result = [...currentLC, value.item];
+      const result = [...currentLC, item];
       localStorage.setItem(bookmarkMovie, JSON.stringify(result));
     } else {
       onActionsPopup();
@@ -54,7 +53,7 @@ export default function Movie(value: MovieInterface) {
       <div className="movie__block-data">
         <div className="movie__block-data-information">
           <div className="movie__block-data-information-rating">
-            Рейтинг: {value.voteAverage}
+            Рейтинг: {voteAverage}
           </div>
 
           <div
@@ -99,9 +98,9 @@ export default function Movie(value: MovieInterface) {
             </svg>
           </div>
         </div>
-        <div className="movie__block-data-title">{value.title}</div>
+        <div className="movie__block-data-title">{title}</div>
         <div>
-          <Link to={`/${value.id}`}>Подробнее</Link>
+          <Link to={`/${id}`}>Подробнее</Link>
         </div>
       </div>
     </div>

@@ -10,15 +10,17 @@ import {
   filterGenres,
   sortByFavotire,
   bookmarkMovie,
-  favoriteMovie,
-  reset
+  reset,
+  years,
+  defaultSort,
+  sortForUser,
 } from "../../consts";
 import { useSelector } from "react-redux";
 import { store } from "../../main";
 import { filterSorting } from "../../actions";
 import { data, Login, ReducerMovies } from "../../reducers";
 
-export default function Filters() {
+export default function Filters() { 
   function filterByYear(e: { target: { value: string } }) {
     let result = data.initList.filter(function (item) {
       if (!item.release_date.indexOf(e.target.value)) {
@@ -30,7 +32,7 @@ export default function Filters() {
 
   const currentList = useSelector(
     (state: ReducerMovies) => state.reducerMovies.curentList
-  );
+  ); 
 
   function filterBySort(e: { target: { value: string } }) {
     let arrayYearSort: any = "12";
@@ -65,7 +67,7 @@ export default function Filters() {
 
       case sortByFavotire:
         const resultFavorite = JSON.parse(
-          localStorage.getItem(favoriteMovie) || ""
+          localStorage.getItem(sortByFavotire) || ""
         );
         filterSorting(resultFavorite);
         break;
@@ -95,39 +97,32 @@ export default function Filters() {
       <div className="filters__block">
         <h2>Фильтры</h2>
         <div className="filters__block-drop-all">
-          <button onClick={() => store.dispatch({type: reset})} >Сбросить все фильтры</button>
+          <button onClick={() => store.dispatch({ type: reset })}>
+            Сбросить все фильтры
+          </button>
         </div>
         <div className="filters__block-drop-all-sort">
           Сортировать по:
           {isAuthorized ? (
             <select onChange={filterBySort} name="" id="">
-              <option value={popularBescending}>Популярные по убыванию</option>
-              <option value={popularAscending}>
-                Популярные по возрастанию
-              </option>
-              <option value={descendingRanking}>Рейтинг по убыванию</option>
-              <option value={ascendingRating}>Рейтинг по возрастанию</option>
-              <option value={sortByFavotire}>Избранное</option>
-              <option value={bookmarkMovie}>Закладки</option>
+              {sortForUser.map((item) => (
+                <option value={item}>{item}</option>
+              ))}
             </select>
           ) : (
             <select onChange={filterBySort} name="" id="">
-              <option value={popularBescending}>Популярные по убыванию</option>
-              <option value={popularAscending}>
-                Популярные по возрастанию
-              </option>
-              <option value={descendingRanking}>Рейтинг по убыванию</option>
-              <option value={ascendingRating}>Рейтинг по возрастанию</option>
+              {defaultSort.map((item) => (
+                <option value={item}>{item} </option>
+              ))}
             </select>
           )}
         </div>
         <div className="filters__block-drop-all-sort">
           Год релиза:
           <select onChange={filterByYear} name="" id="">
-            <option value="2020">2020</option>
-            <option value="2019">2019</option>
-            <option value="2018">2018</option>
-            <option value="2017">2017</option>
+            {years.map((item) => (
+              <option value={item}>{item}</option>
+            ))}
           </select>
         </div>
         <div className="filters__block-genres">
