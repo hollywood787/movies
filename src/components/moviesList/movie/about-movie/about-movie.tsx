@@ -1,4 +1,4 @@
-import "./about-movie.css";
+import { Typography, CardMedia, Stack } from "@mui/material";
 
 type MovieInterface = {
   element: any;
@@ -6,25 +6,35 @@ type MovieInterface = {
 
 function AboutMovie({ element }: MovieInterface) {
   return (
-    <div>
-      <div className="block_element">
-        <div className="block_element-image">
-          <img src="./assets/images/time.jpg" alt="" />
-        </div>
-        <div className="block_element-description">
-          <h1>{element.title}</h1>
-          <div>Рейтинг {element.vote_average}</div>
-          <div>{element.overview}</div>
-        </div>
-      </div>
-      <div className="block_ellement-details">
-        <h2>Детали</h2>
-        <div> Дата выхода: {element.release_date}</div>
-        <div> Проголосовавших: {element.vote_count}</div>
-        <div>Оригинальный язык: {element.original_language}</div>
-        <div> Популярность: {element.popularity}</div>
-      </div>
-    </div>
+    <Stack direction="column" justifyContent="space-between" gap={"1rem"}>
+      <CardMedia
+        image={"./assets/images/time.jpg"}
+        component="img"
+        sx={{ height: 500, width: 350 }}
+      ></CardMedia>
+
+      <Typography component={"h1"} variant={"h5"}>
+        {element.title}
+      </Typography>
+      <Typography variant={"body2"}>Рейтинг {element.vote_average}</Typography>
+      <Typography variant={"body2"}>{element.overview}</Typography>
+
+      <Typography component={"h2"} variant={"h5"}>
+        Детали
+      </Typography>
+      <Typography variant={"body2"}>
+        Дата выхода: {element.release_date}
+      </Typography>
+      <Typography variant={"body2"}>
+        Проголосовавших: {element.vote_count}
+      </Typography>
+      <Typography variant={"body2"}>
+        Оригинальный язык: {element.original_language}
+      </Typography>
+      <Typography variant={"body2"}>
+        Популярность: {element.popularity}
+      </Typography>
+    </Stack>
   );
 }
 

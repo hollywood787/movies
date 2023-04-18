@@ -1,4 +1,3 @@
-import "./App.css";
 import Header from "./components/header/header";
 import MoviesList from "./components/moviesList/movies-list";
 import Filters from "./components/filters/filters";
@@ -8,6 +7,7 @@ import { AboutMovie } from "./components/moviesList/movie/about-movie/about-movi
 import { useSelector } from "react-redux";
 import { ReducerMovies } from "./reducers";
 import { Quiz } from "./components/search/search";
+import { Grid, Box } from "@mui/material";
 
 function App() {
   const movies = useSelector(
@@ -15,13 +15,14 @@ function App() {
   );
 
   return (
-    <div className="App">
+    <Box>
       <Header />
-
-      <section id="hero">
-        <div className="container-fluid">
-          <div className="hero__block">
+      <Box sx={{ p: 3 }}>
+        <Grid container spacing={2} sx={{ paddingTop: 2 }}>
+          <Grid item lg={2}>
             <Filters />
+          </Grid>
+          <Grid item lg={10}>
             <Routes>
               {movies.map((item) => (
                 <Route
@@ -33,11 +34,11 @@ function App() {
               <Route path="/" element={<MoviesList />} />
               <Route path="/search" element={<Quiz />} />
             </Routes>
-          </div>
-        </div>
-      </section>
+          </Grid>
+        </Grid>
+      </Box>
       <Popup />
-    </div>
+    </Box>
   );
 }
 

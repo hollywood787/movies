@@ -1,4 +1,3 @@
-import "./filters.css";
 import Pagination from "../pagination/pagination";
 import { listGenres } from "../mocks/genres";
 import {
@@ -19,8 +18,21 @@ import { useSelector } from "react-redux";
 import { store } from "../../main";
 import { filterSorting } from "../../actions";
 import { data, Login, ReducerMovies } from "../../reducers";
+import {
+  Button,
+  Box,
+  Stack,
+  Typography,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
+import { useState } from "react";
 
-export default function Filters() { 
+export default function Filters() {
+  const [sort, setSort] = useState("");
+
   function filterByYear(e: { target: { value: string } }) {
     let result = data.initList.filter(function (item) {
       if (!item.release_date.indexOf(e.target.value)) {
@@ -32,9 +44,10 @@ export default function Filters() {
 
   const currentList = useSelector(
     (state: ReducerMovies) => state.reducerMovies.curentList
-  ); 
+  );
 
   function filterBySort(e: { target: { value: string } }) {
+    setSort(e.target.value);
     let arrayYearSort: any = "12";
     switch (e.target.value) {
       case popularBescending:
@@ -93,48 +106,84 @@ export default function Filters() {
   const isAuthorized = useSelector((state: Login) => state.reducerLogin);
 
   return (
-    <div className="filters">
-      <div className="filters__block">
-        <h2>Фильтры</h2>
-        <div className="filters__block-drop-all">
-          <button onClick={() => store.dispatch({ type: reset })}>
-            Сбросить все фильтры
-          </button>
-        </div>
-        <div className="filters__block-drop-all-sort">
-          Сортировать по:
+    <Box sx={{ border: "1px solid grey", p: 1 }}>
+      <Stack direction="column" justifyContent="space-between" gap={"1rem"}>
+        <Typography variant="h5" component={"h2"} align="center">
+          Фильтры
+        </Typography>
+        <Button
+          variant="contained"
+          onClick={() => store.dispatch({ type: reset })}
+        >
+          Сбросить все фильтры
+        </Button>
+        <Box>
+          <Typography sx={{ paddingBottom: 2 }}> Сортировать по:</Typography>
+
           {isAuthorized ? (
-            <select onChange={filterBySort} name="" id="">
-              {sortForUser.map((item) => (
-                <option value={item}>{item}</option>
-              ))}
-            </select>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Сортировать</InputLabel>
+              <Select
+                value={sort}
+                label="Age"
+                onChange={filterBySort}
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+              >
+                {sortForUser.map((item) => (
+                  <MenuItem key={item} value={item}>
+                    {item}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           ) : (
-            <select onChange={filterBySort} name="" id="">
-              {defaultSort.map((item) => (
-                <option value={item}>{item} </option>
-              ))}
-            </select>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Сортировать</InputLabel>
+              <Select
+                value={sort}
+                label="Age"
+                onChange={filterBySort}
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+              >
+                {defaultSort.map((item) => (
+                  <MenuItem key={item} value={item}>
+                    {item}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           )}
-        </div>
-        <div className="filters__block-drop-all-sort">
-          Год релиза:
-          <select onChange={filterByYear} name="" id="">
-            {years.map((item) => (
-              <option value={item}>{item}</option>
-            ))}
-          </select>
-        </div>
-        <div className="filters__block-genres">
+        </Box>
+        <Box>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label"> Год релиза:</InputLabel>
+            <Select
+              value={sort}
+              label="Age"
+              onChange={filterByYear}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+            >
+              {years.map((item) => (
+                <MenuItem key={item} value={item}>
+                  {item}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+        <Stack direction="column" justifyContent="space-between" gap={"1rem"}>
           {listGenres.map((item) => (
             <label key={item.id}>
               <input type="checkbox" value={item.id} onChange={sortByGenres} />
               {item.name}
             </label>
           ))}
-        </div>
+        </Stack>
         <Pagination />
-      </div>
-    </div>
+      </Stack>
+    </Box>
   );
 }

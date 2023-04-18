@@ -1,8 +1,8 @@
 import Movie from "./movie/movie";
-import "./movies-list.css";
 import { countPageSwitch } from "../../consts";
 import { useSelector } from "react-redux";
 import { CurrentPage, ReducerMovies } from "../../reducers";
+import { Grid } from "@mui/material";
 
 export default function MoviesList() {
   const movies = useSelector(
@@ -14,16 +14,17 @@ export default function MoviesList() {
   const result = movies.slice(currentPage, currentPage + countPageSwitch);
 
   return (
-    <div className="movie__list-container">
+    <Grid container spacing={2}>
       {result.map((item) => (
-        <Movie
-          key={item.id}
-          title={item.title}
-          voteAverage={item.vote_average}
-          id={item.id}
-          item={item}
-        />
+        <Grid key={item.id} item xs={6}>
+          <Movie
+            title={item.title}
+            voteAverage={item.vote_average}
+            id={item.id}
+            item={item}
+          />
+        </Grid>
       ))}
-    </div>
+    </Grid>
   );
 }
