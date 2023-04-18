@@ -1,11 +1,13 @@
 import "./popup.css";
 import { useSelector } from "react-redux";
-import { store } from "../../main";
 import { SetStateAction, useState } from "react";
 import { loginConst, passwordConst } from "../../consts";
+import { logOutAction } from "../../actions";
+import { offActionsPopup } from "../../actions";
+import { ReducerPopup } from "../../reducers";
 
 function Popup() {
-  const isAuthorized = useSelector((state: boolean) => state.reducerPopup);
+  const isAuthorized = useSelector((state: ReducerPopup) => state.reducerPopup);
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,9 +22,9 @@ function Popup() {
   function autorization(event: { preventDefault: () => void }) {
     event.preventDefault();
     if (login === loginConst && password === passwordConst) {
-      localStorage.setItem("user", "true")
-      store.dispatch({ type: "off" })
-      store.dispatch({ type: "Exit" })
+      localStorage.setItem("user", "true");
+      offActionsPopup();
+      logOutAction();
     }
   }
   return (
@@ -32,7 +34,7 @@ function Popup() {
           <div className="popup">
             <div
               className="button__close"
-              onClick={() => store.dispatch({ type: "off" })}
+              onClick={() => offActionsPopup()}
             >
               X
             </div>
@@ -46,7 +48,7 @@ function Popup() {
                 type="text"
                 placeholder="пароль"
               />
-              <button type="sumbit">Отправить</button>
+              <input type="submit" value={'Отправить'}/>
             </form>
           </div>
         </>
