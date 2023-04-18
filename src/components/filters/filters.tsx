@@ -1,110 +1,88 @@
 import "./filters.css";
 import Pagination from "../pagination/pagination";
-// import Genres from "./genres/genres";
 import { listGenres } from "../mocks/genres";
-import { ChangeListMoviesContext, ListMoviesContext } from "../../App";
-import { useContext, useEffect, useState } from "react";
-import { listMovies } from "../mocks/listMovies";
 import {
   popularВescending,
   popularAscending,
   descendingRanking,
   ascendingRating,
-  defaultYear,
+  filterYear,
+  filterGenres,
+  filterSort,
 } from "../../consts";
+import { useSelector } from "react-redux";
+import { data } from "../mocks/listMovies";
+import { store } from "../../main";
 
 export default function Filters() {
-  const changeMovieList: any = useContext(ChangeListMoviesContext);
-  const [genres, setGenres] = useState("");
-  const [year, setYear] = useState(defaultYear);
-  const [sort, setSort] = useState(descendingRanking);
-
-  function mainFilter(year: string, sort: string, genres: string) {
-    const arrayYear = listMovies.filter(function (item) {
-      if (!item.release_date.indexOf(year)) {
+  function filterByYear(e: { target: { value: string } }) {
+    let result = data.initList.filter(function (item) {
+      if (!item.release_date.indexOf(e.target.value)) {
         return item;
       }
     });
+    data.year = e.target.value;
+    store.dispatch({ type: filterYear, payload: result });
+  }
 
+
+  const currentList = useSelector(
+    (state: boolean) => state.reducerMovies.curentList
+  );
+
+  function filterBySort(e: { target: { value: string } }) {
     let arrayYearSort: any = "12";
-    switch (sort) {
+    switch (e.target.value) {
       case popularВescending:
-        arrayYearSort = [...arrayYear].sort((a, b) =>
+        arrayYearSort = [...currentList].sort((a, b) =>
           a.popularity < b.popularity ? 1 : -1
         );
+        store.dispatch({ type: filterSort, payload: arrayYearSort });
         break;
 
       case popularAscending:
-        arrayYearSort = [...arrayYear].sort((a, b) =>
+        arrayYearSort = [...currentList].sort((a, b) =>
           a.popularity > b.popularity ? 1 : -1
         );
+        store.dispatch({ type: filterSort, payload: arrayYearSort });
         break;
 
       case descendingRanking:
-        arrayYearSort = [...arrayYear].sort((a, b) =>
+        arrayYearSort = [...currentList].sort((a, b) =>
           a.vote_average < b.vote_average ? 1 : -1
         );
+        store.dispatch({ type: filterSort, payload: arrayYearSort });
         break;
 
       case ascendingRating:
-        arrayYearSort = [...arrayYear].sort((a, b) =>
+        arrayYearSort = [...currentList].sort((a, b) =>
           a.vote_average > b.vote_average ? 1 : -1
         );
+        store.dispatch({ type: filterSort, payload: arrayYearSort });
         break;
     }
+  }
 
-    const result = arrayYearSort.filter(function (item: { genre_ids: number[]; }) {
-      if (item.genre_ids.includes(Number(genres))) {
+  function sortByGenres(e: { target: { value: string } }) {
+    const result = currentList.filter(function(item) {
+      if (item.genre_ids.includes(Number(e.target.value))) {
         return item;
-      }
-    });    
-
-    if (!genres) {
-      changeMovieList(arrayYearSort);
-    } else {
-      console.log(arrayYearSort);
-      
-      changeMovieList(result);
-    }
+      }})
+      store.dispatch({ type: filterGenres, payload: result });
   }
 
-  function dropAllFilters() {
-    const sortPopular = [...listMovies].sort((a, b) =>
-      a.vote_average < b.vote_average ? 1 : -1
-    );
-    const sortYear = sortPopular.filter(function (item) {
-      if (!item.release_date.indexOf(defaultYear)) {
-        return item;
-      }
-    });
-    changeMovieList(sortYear);
-  }
-
-  function sortMovieListYear(e: { target: { value: string } }) {
-    setYear(e.target.value);
-    mainFilter(e.target.value, sort, genres);
-  }
-
-  function sortMovieListPopular(e: { target: { value: string } }) {
-    setSort(e.target.value);
-    mainFilter(year, e.target.value, genres);
-  }
-
-  function sortMovieListGenres(e: { target: { value: string } }) {   
-    setGenres(e.target.value);
-    mainFilter(year, sort, e.target.value);
-  }
+  const isAuthorized = useSelector((state: boolean) => state.reducerLogin);
 
   return (
     <div className="filters">
       <div className="filters__block">
         <h2>Фильтры</h2>
         <div className="filters__block-drop-all">
-          <button onClick={dropAllFilters}>Сбросить все фильтры</button>
+          <button>Сбросить все фильтры</button>
         </div>
         <div className="filters__block-drop-all-sort">
           Сортировать по:
-          <select onChange={sortMovieListPopular} name="" id="">
+          <select onChange={filterBySort} name="" id="">
             <option value={popularВescending}>Популярные по убыванию</option>
             <option value={popularAscending}>Популярные по возрастанию</option>
             <option value={descendingRanking}>Рейтинг по убыванию</option>
@@ -113,7 +91,7 @@ export default function Filters() {
         </div>
         <div className="filters__block-drop-all-sort">
           Год релиза:
-          <select onChange={sortMovieListYear} name="" id="">
+          <select onChange={filterByYear} name="" id="">
             <option value="2020">2020</option>
             <option value="2019">2019</option>
             <option value="2018">2018</option>
@@ -123,11 +101,21 @@ export default function Filters() {
         <div className="filters__block-genres">
           {listGenres.map((item) => (
             <label key={item.id}>
-              <input type="checkbox" value={item.id} onChange={sortMovieListGenres}/>
+              <input type="checkbox" value={item.id} onChange={sortByGenres} />
               {item.name}
             </label>
           ))}
         </div>
+        {isAuthorized && (
+          <div>
+            <select name="" id="">
+              <option value="1">Избранное</option>
+            </select>
+            <select name="" id="">
+              <option value="2">Закладки</option>
+            </select>
+          </div>
+        )}
         <Pagination />
       </div>
     </div>

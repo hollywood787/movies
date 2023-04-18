@@ -1,18 +1,20 @@
+import { AnyAction, combineReducers } from "redux";
+import { filterYear, filterSort, filterGenres, nextPage, prevPage } from "../../consts";
 interface Movie {
-    readonly id: number
-    readonly "title": string
-    readonly "adult"?: boolean
-    readonly "backdrop_path": string
-    readonly "genre_ids": number[]
-    readonly "original_language": string
-    readonly "original_title": string
-    readonly "overview": string
-    readonly "popularity": number
-    readonly "poster_path": string
-    readonly "release_date": string
-    readonly "video": boolean
-    readonly "vote_average": number
-    readonly "vote_count": number
+    id: number
+    "title": string
+    "adult"?: boolean
+    "backdrop_path": string
+    "genre_ids": number[]
+    "original_language": string
+    "original_title": string
+    "overview": string
+    "popularity": number
+    "poster_path": string
+    "release_date": string
+    "video": boolean
+    "vote_average": number
+    "vote_count": number
 }
 
 
@@ -972,7 +974,7 @@ export const listMovies: Movie[] = [
     },
     {
         adult: false,
-        backdrop_path: null,
+        backdrop_path: "/ng6SSB3JhbcpKTwbPDsRwUYK8Cq.jpg",
         genre_ids: [],
         id: 982790,
         original_language: "en",
@@ -2918,7 +2920,7 @@ export const listMovies: Movie[] = [
     },
     {
         adult: false,
-        backdrop_path: null,
+        backdrop_path: "/ng6SSB3JhbcpKTwbPDsRwUYK8Cq.jpg",
         genre_ids: [],
         id: 782116,
         original_language: "en",
@@ -3489,7 +3491,7 @@ export const listMovies: Movie[] = [
     },
     {
         adult: false,
-        backdrop_path: null,
+        backdrop_path: "/ng6SSB3JhbcpKTwbPDsRwUYK8Cq.jpg",
         genre_ids: [27, 18],
         id: 718022,
         original_language: "en",
@@ -3744,7 +3746,7 @@ export const listMovies: Movie[] = [
     },
     {
         adult: false,
-        backdrop_path: null,
+        backdrop_path: "/ng6SSB3JhbcpKTwbPDsRwUYK8Cq.jpg",
         genre_ids: [10749],
         id: 703120,
         original_language: "zh",
@@ -4081,3 +4083,84 @@ export const listMovies: Movie[] = [
         vote_count: 885,
     },
 ];
+
+export interface DataMovies {
+    initList: Movie[];
+    curentList: Movie[];
+
+    year: string
+}
+
+export const data: DataMovies = {
+    initList: listMovies,
+    curentList: listMovies,
+
+    year: '',
+}
+
+const initalStatePopup = false;
+const initalStateLogin = false;
+const initalStateCurrentPage = 0;
+
+
+export function reducerMovies(state = data, action: AnyAction) {
+    switch (action.type) {
+        case filterYear:
+            return { ...state, curentList: action.payload }
+
+        case filterSort:
+            return { ...state, curentList: action.payload }
+
+        case filterGenres:
+            return { ...state, curentList: action.payload }
+
+        default:
+            return state;
+    }
+}
+
+export function reducerPopup(state = initalStatePopup, action: AnyAction) {
+    switch (action.type) {
+        case 'off':
+            return state = false
+
+        case 'on':
+            return state = true
+
+        default:
+            return state;
+    }
+}
+
+export function reducerLogin(state = initalStateLogin, action: AnyAction) {
+    switch (action.type) {
+        case 'Login':
+            return state = false
+
+        case 'Exit':
+            return state = true
+
+        default:
+            return state;
+    }
+}
+
+export function reducerCurrentPage(state = initalStateCurrentPage, action: AnyAction) {
+    switch (action.type) {
+        case nextPage:
+            return state - action.payload;
+
+        case prevPage:
+            return state + action.payload;
+
+        default:
+            return state;
+    }
+}
+
+export default combineReducers({
+    reducerPopup,
+    reducerMovies,
+    reducerLogin,
+    reducerCurrentPage
+})
