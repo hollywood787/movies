@@ -1,6 +1,6 @@
 export const urlImage = "https://image.tmdb.org/t/p/w500";
 export const countPageSwitch = 10;
-export const popularBescending = 'Популярные по убыванию'
+export const popularBescending = 'Популярные по убыванию фильмы'
 export const popularAscending = 'Популярные по возрастанию';
 export const descendingRanking = 'Рейтинг по убыванию';
 export const ascendingRating = 'Рейтинг по возрастанию';
